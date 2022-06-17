@@ -1,11 +1,15 @@
 <template>
    <div class="content-border whole-product">
-      <img :src="require(`@/images/${productModel.icon}`)" alt="loading url " class="images"/> 
+      <img :src="require(`@/images/${productModel.icon}`)" alt="loading url " class="product-image"/> 
       <div class="text-content">
          <div class="content__name"> {{productModel.name}} </div>
          <div class="content__description"> {{productModel.description}} </div>
          <div class="content__price"> {{productModel.price}} </div>
       </div>
+      <button
+      class="remove-trash"
+      @click="emitOnRemove"
+      ></button>
    </div>
 </template>
 
@@ -13,45 +17,40 @@
 import { ref } from 'vue';
 
 export default {
+    setup(props, { emit }) {
 
-   setup(props, { emit }) {
-
-      const helper = (icon) => {
-         let url = icon;
-         return url
+      const emitOnRemove = (event) => {
+         emit('removeProduct', props.productModel);
       }
-
-      return {
-         helper
-      }
-   },
-
-   created() {
-
-   },
-
-   props : {
-      productModel : {
-         required: true,
-         default: {
-            name: {
-               required: true,
-               type: String
-            },
-            description: {
-               type: String
-            },
-            icon: {
-               required: true,
-               type: String
-            },
-            price: {
-               required: true,
-               type: String
+        return {
+         emitOnRemove
+        };
+    },
+    props: {
+        productModel: {
+            required: true,
+            default: {
+                name: {
+                    required: true,
+                    type: String
+                },
+                description: {
+                    type: String
+                },
+                icon: {
+                    required: true,
+                    type: String
+                },
+                price: {
+                    required: true,
+                    type: String
+                },
+                id : {
+                  required: true,
+                }
             }
-         }
-      }
-   }
+        }
+    },
 }
 
 </script>
@@ -65,27 +64,28 @@ export default {
       position: relative;
       &:hover {
          cursor: pointer;
-         &::after {
-         content: url('');
-         width: 32px;
-         height: 32px;
-         position: absolute;
-         top: -10px;
-         right: -10px;
-         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-         border-radius: 10px;
-         background: url('@/images/trashIcon.svg') center no-repeat,#FF8484;
-         cursor: pointer;
-      }
+         
       }
    }
-   .image-content {
-      justify-self: flex-start;
-      width: 100%;
-      height: 200px;
-      background: url('@/images/defaultProductImage.svg') no-repeat center;
+
+   .whole-product:hover .remove-trash {
+      display: block;
    }
-   .images {
+
+   .remove-trash{
+      display: none; 
+      width: 32px;
+      height: 32px;
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      background: url('@/images/trashIcon.svg') center no-repeat,#FF8484;
+      cursor: pointer;
+   }
+
+   .product-image {
       max-width: 100%;
       max-height: 200px;
    }

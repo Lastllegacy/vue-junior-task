@@ -13,10 +13,17 @@
          />
       </div>
       <div class="products">
-        <ProductItem
-        v-for="defaultProduct of defaultProducts"
-        :productModel="defaultProduct"
-         />
+        <TransitionGroup
+        name="product-list"
+        >
+          <ProductItem
+            v-for="defaultProduct of defaultProducts"
+            :productModel="defaultProduct"
+            :key="defaultProduct.id"
+            @removeProduct="logger"
+            />
+        </TransitionGroup>
+        
         
       </div>
     </div>
@@ -31,26 +38,32 @@ import ProductItem from './components/ProductItem.vue';
   export default {
 
     setup (props, { emit }) {
+
       const selectedOption = ref('');
       const newIcon = ref("");
 
+      function logger (product) {
+        defaultProducts.value = defaultProducts.value.filter( some => some.id != product.id)
+      }
+
 
       const defaultProducts = ref([
-        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб."},
-        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб."},
-        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб."},
-        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб."},
-        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб."},
-        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб."},
-        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб."},
-        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб."},
-        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб."}
+        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб.", id: "1"},
+        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "20 000 руб.",id: "2"},
+        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "30 000 руб.",id: "3"},
+        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб.",id: "4"},
+        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб.",id: "5"},
+        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб.",id: "6"},
+        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб.",id: "7"},
+        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб.",id: "8"},
+        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб.",id: "9"}
       ])
 
       return {
         selectedOption,
         newIcon,
-        defaultProducts
+        defaultProducts,
+        logger
       }
     },
 
@@ -88,10 +101,23 @@ import ProductItem from './components/ProductItem.vue';
   }
   .products {
     width: 65%;
-    height: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+  }
+
+  .product-list-item {
+  display: inline-block;
+  margin-right: 10px;
+  }
+  .product-list-enter-active, 
+  .product-list-leave-active {
+    transition: all 1s;
+  }
+  .product-list-enter, 
+  .product-list-leave-to {
+    opacity: 0;
+    transform: translateY(30px);
   }
 
 </style>
