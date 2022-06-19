@@ -13,7 +13,7 @@
 <style>
 .btn {
    padding: 10px 15px;
-   background: #EEEEEE;
+   cursor: pointer;
    border-radius: 10px;
 }
 </style>

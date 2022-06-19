@@ -10,21 +10,14 @@
     <div class="app__body">
       <div class="content-border stick-form">
         <StickyForm
+        @addProduct="addProductHandler"
          />
       </div>
       <div class="products">
-        <TransitionGroup
-        name="product-list"
-        >
-          <ProductItem
-            v-for="defaultProduct of defaultProducts"
-            :productModel="defaultProduct"
-            :key="defaultProduct.id"
-            @removeProduct="logger"
-            />
-        </TransitionGroup>
-        
-        
+        <ProductList
+        :products="defaultProducts"
+        @removeProduct="removeProductHandler"
+         />
       </div>
     </div>
   </div>
@@ -32,18 +25,24 @@
 
 <script>
 import StickyForm from './components/StickyForm.vue';
-import { ref } from 'vue';
 import ProductItem from './components/ProductItem.vue';
 
-  export default {
+import { ref } from 'vue';
+import ProductList from './components/ProductList.vue';
 
+  export default {
+  
     setup (props, { emit }) {
 
-      const selectedOption = ref('');
+      const selectedOption = ref("");
       const newIcon = ref("");
 
-      function logger (product) {
+      function removeProductHandler (product) {
         defaultProducts.value = defaultProducts.value.filter( some => some.id != product.id)
+      }
+
+      function addProductHandler (product) {
+        defaultProducts.value.push(product)
       }
 
 
@@ -63,14 +62,16 @@ import ProductItem from './components/ProductItem.vue';
         selectedOption,
         newIcon,
         defaultProducts,
-        logger
+        removeProductHandler,
+        addProductHandler
       }
     },
 
 
     components: {
     StickyForm,
-    ProductItem
+    ProductItem,
+    ProductList
 },
 }
 </script>
@@ -101,23 +102,6 @@ import ProductItem from './components/ProductItem.vue';
   }
   .products {
     width: 65%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-
-  .product-list-item {
-  display: inline-block;
-  margin-right: 10px;
-  }
-  .product-list-enter-active, 
-  .product-list-leave-active {
-    transition: all 1s;
-  }
-  .product-list-enter, 
-  .product-list-leave-to {
-    opacity: 0;
-    transform: translateY(30px);
   }
 
 </style>

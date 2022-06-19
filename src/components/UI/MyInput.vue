@@ -76,4 +76,7 @@ export default {
    border-radius: 4px;
    overflow: hidden;
 }
+.error {
+   color: red;
+}
 </style>

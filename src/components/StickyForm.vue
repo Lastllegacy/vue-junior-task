@@ -12,8 +12,9 @@
               />
          </div>
          <MyButton
-         @click="onAddItem"
-          class="add-item-button">
+         @click="emitOnAddProduct"
+          class="add-item-button"
+          >
             Добавить товар
          </MyButton>
          </form>
@@ -29,24 +30,41 @@
          const labels = ref([
             { name: "Наименование товара", id:"1", is: "name", placeholder:"Наименование товара"},
             { name: "Описание товара", needValidation: true, inputHeight:"6rem",id:"2",is: "description", isTextarea:true ,placeholder:"Описание товара"},
-            { name: "Ссылка на изображение товара",id:"3", is: "link", placeholder: "Ссылка на изображение товара"},
+            { name: "Ссылка на изображение товара",id:"3", is: "icon", placeholder: "Ссылка на изображение товара"},
             { name: "Цена товара", id:"4", is: "price", placeholder: "Цена товара"},
          ]);
          const product = ref({
                name: '',
                description: '',
-               link: '',
-               price: ''
+               icon: '',
+               price: '',
          })
 
-         const onAddItem = () => {
-            emit('onAddItem', {product: product.value})
+         function addProductAndClearForm () {
+
+            emit('addProduct', {...product.value,id: Date.now()}); 
+
+            for(let prop in product.value) {
+               product.value[prop] = ''
+            }
+         }
+
+         const emitOnAddProduct = (event) => {
+
+            const objectHelper = product.value
+            
+            for(let prop in objectHelper) {
+               if(objectHelper[prop] == '' && prop != 'description') {
+                  return alert('Missing values in form ')
+               }
+            }
+            return addProductAndClearForm()
          }
 
          return {
             product,
             labels,
-            onAddItem
+            emitOnAddProduct
          }
       }
 

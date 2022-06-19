@@ -1,6 +1,6 @@
 <template>
    <div class="content-border whole-product">
-      <img :src="require(`@/images/${productModel.icon}`)" alt="loading url " class="product-image"/> 
+      <img :src="imageSourceChecker(productModel.icon)" alt="loading url " class="product-image"/> 
       <div class="text-content">
          <div class="content__name"> {{productModel.name}} </div>
          <div class="content__description"> {{productModel.description}} </div>
@@ -8,23 +8,33 @@
       </div>
       <button
       class="remove-trash"
-      @click="emitOnRemove"
+      @click="emitOnRemoveProduct"
       ></button>
    </div>
 </template>
 
 <script>
-import { ref } from 'vue';
 
 export default {
+
     setup(props, { emit }) {
 
-      const emitOnRemove = (event) => {
+      const emitOnRemoveProduct = (event) => {
          emit('removeProduct', props.productModel);
       }
-        return {
-         emitOnRemove
-        };
+
+      function imageSourceChecker (src) {
+         
+         if (src.substring(0,4) == "http"){
+            return src
+         }
+         return require(`@/images/${src}`)
+      }
+
+      return {
+      emitOnRemoveProduct,
+      imageSourceChecker
+      }
     },
     props: {
         productModel: {
