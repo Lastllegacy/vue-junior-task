@@ -3,14 +3,30 @@
          <form 
             @submit.prevent
          >
-         <div>
-            <MyInput 
-               v-for="label in labels"
-               :key="label.id"
-               :modelInput="label"
-               v-model="product[label.is]"
-              />
+         <div v-for="input,label in newInputs" 
+         :key="input.id"
+         >
+         <label :for="input.id" class="input-label">{{input.name}}</label>
+         <MyNewInput 
+         :placeholder="input.name"
+         :id="input.id"
+         v-model="product[label]" 
+         />
          </div>
+
+         <!-- <div v-for="input,key in inputs" >
+         <MyInput 
+               :key="input.id"
+               :modelInput="input"
+               v-model="product[key]"
+              />
+              <MyError
+              >
+               {{ showErrors[key] }}
+              </MyError>
+
+         </div> -->
+
          <MyButton
          @click="emitOnAddProduct"
           class="add-item-button"
@@ -22,59 +38,68 @@
 </template>
 
 <script>
-   import { ref } from 'vue';
+   import { reactive, computed } from 'vue';
    
    export default {
-
-      setup (props, { emit }) {
-         const labels = ref([
-            { name: "Наименование товара", id:"1", is: "name", placeholder:"Наименование товара"},
-            { name: "Описание товара", needValidation: true, inputHeight:"6rem",id:"2",is: "description", isTextarea:true ,placeholder:"Описание товара"},
-            { name: "Ссылка на изображение товара",id:"3", is: "icon", placeholder: "Ссылка на изображение товара"},
-            { name: "Цена товара", id:"4", is: "price", placeholder: "Цена товара"},
-         ]);
-         const product = ref({
-               name: '',
-               description: '',
-               icon: '',
-               price: '',
-         })
-
-         function addProductAndClearForm () {
-
-            emit('addProduct', {...product.value,id: Date.now()}); 
-
-            for(let prop in product.value) {
-               product.value[prop] = ''
+    setup(props, { emit }) {
+        const inputs = reactive({
+            name: { name: "Наименование товара", id: "1" },
+            description: { name: "Описание товара", id: "2", inputHeight: "6rem", isTextarea: true, needValidation: false },
+            icon: { name: "Ссылка на изображение товара", id: "3" },
+            price: { name: "Цена товара", id: "4" },
+        });
+        const newInputs = reactive({
+            name: { name: "Наименование товара", id: "1" },
+            icon: { name: "Ссылка на изображение товара", id: "3" },
+            price: { name: "Цена товара", id: "4" },
+        });
+        const product = reactive({
+            name: "",
+            description: "",
+            icon: "",
+            price: "",
+        });
+        const showErrors = reactive({
+            name: "",
+            price: "",
+            icon: ""
+        });
+        function addProductAndClearForm() {
+            emit("addProduct", { ...product, id: Date.now() });
+            for (let prop in product) {
+                product[prop] = "";
             }
-         }
-
-         const emitOnAddProduct = (event) => {
-
-            const objectHelper = product.value
-            
-            for(let prop in objectHelper) {
-               if(objectHelper[prop] == '' && prop != 'description') {
-                  return alert('Missing values in form ')
-               }
+        }
+        const emitOnAddProduct = (event) => {
+            for (let prop in product) {
+                if (product[prop] == "" && prop != "description") {
+                    return showErrors[prop] = "Поле является обязательным";
+                }
+                else {
+                    showErrors[prop] = "";
+                }
             }
-            return addProductAndClearForm()
-         }
-
-         return {
+            return addProductAndClearForm();
+        };
+        return {
             product,
-            labels,
-            emitOnAddProduct
-         }
-      }
-
-   }
+            inputs,
+            emitOnAddProduct,
+            showErrors,
+            newInputs
+        };
+    },
+}
 </script>
 
-<style scoped>
+<style lang="scss">
    .stick-content {
       padding: 24px;
       width: 100%;
+   }
+
+   .input-label {
+      font-size: 10px;
    }
 
    .add-item-button {
@@ -84,5 +109,12 @@
       font-size: 12px;
       margin: 24px 0 0 0;
       color: #B4B4B4;
+   }
+
+
+
+   .error {
+      color: red;
+      font-size: 8px;
    }
 </style>
