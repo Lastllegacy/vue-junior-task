@@ -1,120 +1,138 @@
 <template>
-      <div class="stick-content">
          <form 
             @submit.prevent
          >
-         <div v-for="input,label in newInputs" 
-         :key="input.id"
-         >
-         <label :for="input.id" class="input-label">{{input.name}}</label>
-         <MyNewInput 
-         :placeholder="input.name"
-         :id="input.id"
-         v-model="product[label]" 
+         <!-- This input goes for name -->
+         <label :for="newInputs.name.id" class="input-label valid">{{newInputs.name.name}}</label>
+         <MyNewInput :placeholder="newInputs.name.name" :id="newInputs.name.id" v-model="product.name"
+         :class="{ ['validation']: showErrors.name }"
+          />
+         <MyError> {{ showErrors.name }} </MyError>
+
+         <!-- This textarea goes for description -->
+         <label :for="newInputs.name.id" class="input-label">{{newInputs.description.name}}</label>
+         <textarea class="input-text text-area" :placeholder="newInputs.description.name" :id="newInputs.description.id" 
+         v-model="product.description">
+         </textarea>
+      
+         <!-- This input goes for icon -->
+         <label :for="newInputs.icon.id" class="input-label valid">{{newInputs.icon.name}}</label>
+         <MyNewInput :placeholder="newInputs.icon.name" :id="newInputs.icon.id" v-model="product.icon" 
+         :class="{ ['validation']: showErrors.icon }"
          />
-         </div>
+         <MyError> {{showErrors.icon}} </MyError>
 
-         <!-- <div v-for="input,key in inputs" >
-         <MyInput 
-               :key="input.id"
-               :modelInput="input"
-               v-model="product[key]"
-              />
-              <MyError
-              >
-               {{ showErrors[key] }}
-              </MyError>
-
-         </div> -->
+         <!-- This input goes for price -->
+         <label :for="newInputs.price.id" class="input-label valid">{{newInputs.price.name}}</label>
+         <MyNewInput :placeholder="newInputs.price.name" :id="newInputs.price.id" v-model="product.price" 
+         :class="{ ['validation']: showErrors.price }"
+         />
+         <MyError> {{ showErrors.price }}  </MyError>
 
          <MyButton
-         @click="emitOnAddProduct"
+         @click="onSubmit"
           class="add-item-button"
+          :class="{ ['add-item-button-valid']: (product.name,product.icon,product.price) }"
           >
             Добавить товар
          </MyButton>
+
          </form>
-      </div>
 </template>
 
 <script>
-   import { reactive, computed } from 'vue';
+   import { reactive } from 'vue';
    
    export default {
+
     setup(props, { emit }) {
-        const inputs = reactive({
-            name: { name: "Наименование товара", id: "1" },
-            description: { name: "Описание товара", id: "2", inputHeight: "6rem", isTextarea: true, needValidation: false },
-            icon: { name: "Ссылка на изображение товара", id: "3" },
-            price: { name: "Цена товара", id: "4" },
+
+      const newInputs = reactive({
+         name: { name: "Наименование товара", id: "1" },
+         description: { name:"Описание товара", id:"2" },
+         icon: { name: "Ссылка на изображение товара", id: "3" },
+         price: { name: "Цена товара", id: "4" },
+      });
+
+      const product = reactive({
+         name: "",
+         description: "",
+         icon: "",
+         price: "",
+      });
+      const showErrors = reactive({
+         name: "",
+         price: "",
+         icon: ""
         });
-        const newInputs = reactive({
-            name: { name: "Наименование товара", id: "1" },
-            icon: { name: "Ссылка на изображение товара", id: "3" },
-            price: { name: "Цена товара", id: "4" },
-        });
-        const product = reactive({
-            name: "",
-            description: "",
-            icon: "",
-            price: "",
-        });
-        const showErrors = reactive({
-            name: "",
-            price: "",
-            icon: ""
-        });
-        function addProductAndClearForm() {
-            emit("addProduct", { ...product, id: Date.now() });
-            for (let prop in product) {
-                product[prop] = "";
-            }
-        }
-        const emitOnAddProduct = (event) => {
-            for (let prop in product) {
-                if (product[prop] == "" && prop != "description") {
-                    return showErrors[prop] = "Поле является обязательным";
-                }
-                else {
-                    showErrors[prop] = "";
-                }
-            }
-            return addProductAndClearForm();
-        };
-        return {
-            product,
-            inputs,
-            emitOnAddProduct,
-            showErrors,
-            newInputs
-        };
-    },
+
+      function addProductAndClearForm() {
+         emit("addProduct", { ...product, id: Date.now() });
+         for (let prop in product) {
+               product[prop] = "";
+         }
+      }
+
+      const onSubmit = (event) => {
+         for (let prop in product) {
+               if (product[prop] == "" && prop != "description") {
+                  return showErrors[prop] = "Поле является обязательным" 
+               }
+               else {
+                  showErrors[prop] = "";
+               }
+         }
+         return addProductAndClearForm();
+      };
+
+      return {
+         product,
+         onSubmit,
+         showErrors,
+         newInputs
+      };
+   },
 }
 </script>
 
 <style lang="scss">
-   .stick-content {
-      padding: 24px;
-      width: 100%;
-   }
 
    .input-label {
       font-size: 10px;
    }
 
    .add-item-button {
-      font-family: 'Inter';
-      width: 100%;
-      font-weight: 600;
-      font-size: 12px;
       margin: 24px 0 0 0;
+      width: 100%;
+      &-valid {
+         background: #7BAE73;
+         color: white;
+      }
       color: #B4B4B4;
+      
    }
-
-
 
    .error {
       color: red;
       font-size: 8px;
    }
+
+   .text-area {
+      resize: none;
+      height: 6rem;
+      font-family: 'Source Sans Pro' , sans-serif;
+   }
+
+   .valid {
+      &::after {
+         content: url('@/images/validationImage.svg');
+         position: relative;
+         bottom: 6px;
+      }
+   }
+
+   .validation {
+      border: 1px solid red;
+   }
+
 </style>

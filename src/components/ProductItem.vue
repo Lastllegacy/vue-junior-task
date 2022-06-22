@@ -74,7 +74,6 @@ export default {
       position: relative;
       &:hover {
          cursor: pointer;
-         
       }
    }
 

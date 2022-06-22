@@ -15,7 +15,7 @@
       </div>
       <div class="products">
         <ProductList
-        :products="defaultProducts"
+        :products="arrayOfProducts"
         @removeProduct="removeProductHandler"
          />
       </div>
@@ -38,30 +38,27 @@ import ProductList from './components/ProductList.vue';
       const newIcon = ref("");
 
       function removeProductHandler (product) {
-        defaultProducts.value = defaultProducts.value.filter( some => some.id != product.id)
+        arrayOfProducts.value = arrayOfProducts.value.filter( p => p.id != product.id)
       }
 
       function addProductHandler (product) {
-        defaultProducts.value.push(product)
+        arrayOfProducts.value.push(product)
       }
 
 
-      const defaultProducts = ref([
+      const arrayOfProducts = ref([
         {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб.", id: "1"},
         {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "20 000 руб.",id: "2"},
         {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "30 000 руб.",id: "3"},
-        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб.",id: "4"},
-        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб.",id: "5"},
-        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб.",id: "6"},
-        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб.",id: "7"},
-        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб.",id: "8"},
-        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "10 000 руб.",id: "9"}
+        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "40 000 руб.", id: "4"},
+        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "50 000 руб.",id: "5"},
+        {name:"Наименование товара", description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк" ,icon : "defaultProductImage.svg", price: "60 000 руб.",id: "6"},
       ])
 
       return {
         selectedOption,
         newIcon,
-        defaultProducts,
+        arrayOfProducts,
         removeProductHandler,
         addProductHandler
       }
@@ -76,7 +73,7 @@ import ProductList from './components/ProductList.vue';
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
   .app {
     margin: 32px;
@@ -99,9 +96,11 @@ import ProductList from './components/ProductList.vue';
     height: 100%;
     position: sticky;
     top: 0;
+    padding: 24px;
   }
   .products {
     width: 65%;
+    margin-top: -1%;
   }
 
 </style>

@@ -37,7 +37,6 @@ export default {
 
 .input-text {
    width: 100%;
-   border: 0;
    margin-top: 4px;
    padding: 10px 15px;
    background: #FFFEFB;
