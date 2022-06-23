@@ -46,5 +46,12 @@ export default {
       font-family: 'Source Sans Pro';
    }
 }
+@media screen and (max-width: 720px) {
+   .input-text {
+   font-size: 12px;
+   padding: 5px 10px;
+}
+   
+}
 
 </style>

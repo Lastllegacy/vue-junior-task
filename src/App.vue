@@ -103,4 +103,47 @@ import ProductList from './components/ProductList.vue';
     margin-top: -1%;
   }
 
+  @media screen and (max-width: 720px) {
+    .app {
+    margin: 16px;
+
+    &__header {
+      font-size: 22px;
+    }
+    &__body {
+      margin: 10px 0 0 0;
+    }
+  }
+  }
+
+  @media screen and (max-width: 640px) {
+    .stick-form {
+    width: 40%; 
+    padding: 10px;
+  }
+  .products {
+    width: 59%;
+  }
+  }
+
+  @media screen and (max-width: 450px) {
+
+    .app {
+    margin: 10px;
+    &__body {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  .stick-form {
+    position: static;
+    width: 100%;
+  }
+  .products {
+    width: 100%;
+    margin-top: 25px;
+  }
+  }
+
+
 </style>

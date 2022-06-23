@@ -32,7 +32,7 @@
          <MyButton
          @click="onSubmit"
           class="add-item-button"
-          :class="{ ['add-item-button-valid']: (product.name,product.icon,product.price) }"
+          :class="{ ['add-item-button-valid']: (product.name && product.icon && product.price) }"
           >
             Добавить товар
          </MyButton>

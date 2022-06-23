@@ -65,7 +65,7 @@ export default {
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
    .whole-product {
       width: 32%;
       margin: 1% 0;
@@ -96,11 +96,11 @@ export default {
 
    .product-image {
       max-width: 100%;
-      max-height: 200px;
+      max-height: 250px;
    }
 
    .text-content {
-      margin: 0 1rem;
+      padding: 0 1rem;
    }
 
    .content {
@@ -121,5 +121,66 @@ export default {
          margin: 2rem 0;
       }
    }
-   
+
+   @media screen and (max-width: 1100px) {
+      .whole-product {
+      width: 49%;
+      margin: 1% 0;
+      }
+      .content {
+      &__name {
+         font-size: 18px;
+      }
+
+      &__description {
+         font-size: 14px;
+      }
+      
+      &__price {
+         font-size: 20px;
+      }
+      }
+   }
+
+   @media screen and (max-width: 640px) {
+      .whole-product {
+      width: 100%;
+      margin: 3% 0;
+      }
+      .content {
+      &__name {
+         font-size: 18px;
+      }
+
+      &__description {
+         font-size: 14px;
+      }
+      
+      &__price {
+         font-size: 20px;
+      }
+      }
+   }
+
+   @media screen and (max-width: 450px) {
+      .content {
+      &__name {
+         font-size: 15px;
+      }
+
+      &__description {
+         font-size: 12px;
+      }
+      
+      &__price {
+         font-size: 17px;
+      }
+      }
+      .whole-product {
+      width: 100%;
+      margin: 3% 0;
+      }
+      
+   }
+
 </style>

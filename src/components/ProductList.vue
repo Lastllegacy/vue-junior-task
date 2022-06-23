@@ -42,7 +42,7 @@ import ProductItem from './ProductItem.vue'
 
 <style>
 
-.product-list-move, /* apply transition to moving elements */
+.product-list-move, 
 .product-list-enter-active,
 .product-list-leave-active {
   transition: all 0.5s ease;
@@ -54,13 +54,12 @@ import ProductItem from './ProductItem.vue'
   transform: translateY(30px);
 }
 
-/* ensure leaving items are taken out of layout flow so that moving
-   animations can be calculated correctly. */
 .product-list-leave-active {
   position: absolute;
   transform: translateY(-30px);
   transition: all 1s ease;
 }
+
 
 
 .list-of-products {

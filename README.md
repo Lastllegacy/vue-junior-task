@@ -10,8 +10,3 @@ run command npm install to install all dependencies
 ```
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
